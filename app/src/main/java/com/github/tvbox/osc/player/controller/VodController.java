@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.api.ApiConfig;
+import com.github.tvbox.osc.base.App;
 import com.github.tvbox.osc.bean.IJKCode;
 import com.github.tvbox.osc.bean.ParseBean;
 import com.github.tvbox.osc.bean.SourceBean;
@@ -41,6 +42,8 @@ import com.github.tvbox.osc.util.PlayerHelper;
 import com.github.tvbox.osc.util.ScreenUtils;
 import com.github.tvbox.osc.util.SubtitleHelper;
 import com.github.tvbox.osc.util.VideoParseRuler;
+import com.github.tvbox.osc.util.thunder.Jianpian;
+import com.github.tvbox.osc.util.thunder.Thunder;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.AbsCallback;
 import com.lzy.okgo.model.HttpHeaders;
@@ -877,8 +880,8 @@ public class VodController extends BaseController {
 
         long currentTime = System.currentTimeMillis();
         final int baseSkip = 10000; // 基础跳转10秒
-        final float accelerationFactor = 1.5f; // 连续操作时的加速因子
-        final long threshold = 500; // 操作间隔阈值500ms
+        final float accelerationFactor = 2.0f; // 连续操作时的加速因子
+        final long threshold = 800; // 操作间隔阈值500ms
 
         if (!simSlideStart) {
             simSlideStart = true;
@@ -1413,5 +1416,12 @@ public class VodController extends BaseController {
                 xWalk_view.evaluateJavascript(js, null);
             }
         }
+    }
+
+    public void stopOther()
+    {
+        Thunder.stop(false);//停止磁力下载
+        Jianpian.finish();//停止p2p下载
+        App.getInstance().setDashData(null);
     }
 }
